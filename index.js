@@ -2,6 +2,7 @@
 
 var xmrig = angular.module('xmrigstats', ['ngMaterial']);
 xmrig.controller('MainController', function ($scope, $http, $mdDialog) {
+    var x;
     $scope.safeApply = function (fn) {
         var phase = this.$root.$$phase;
         if (phase === '$apply' || phase === '$digest') {
@@ -25,17 +26,18 @@ xmrig.controller('MainController', function ($scope, $http, $mdDialog) {
             $scope.res.started = getDate(d);
         }).catch(function (err) {
             console.log(err);
-            $mdDialog.show($mdDialog.alert().clickOutsideToClose(true).title('Error').textContent('We could not reach a Miner at ' + err.config.url + '. Is the URL and the Port correct?').ok('Damn!'));
+            $mdDialog.show($mdDialog.alert().clickOutsideToClose(true).title('Error').textContent('We could not reach a Miner at ' + err.config.url + '. Sleeping for 60 Seconds!').ok('Damn!'));
+            clearInterval(x);
+            interval(60*1000);
         });
     };
     $scope.update();
     interval();
-    var x;
-    function interval() {
+    function interval(value) {
         console.log('Updating: ' + localStorage.getItem('update')*1000);
         x = setInterval(function () {
             $scope.update();
-        }, localStorage.getItem('update')*1000 || 5000);
+        }, value || localStorage.getItem('update')*1000 || 5000);
     }
     $scope.settings = function (ev) {
         $mdDialog.show({
