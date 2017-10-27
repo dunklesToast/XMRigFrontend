@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/angular-material/1.1.5/angular-material.min.css" type="text/css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/material-design-icons/3.0.1/iconfont/material-icons.min.css" type="text/css"/>
+    <style>
+        .head {
+            color: rgba(255, 255, 255, 0.7);
+            font-weight: 400;
+            letter-spacing: 0.01em;
+            font-size: 14px;
+            margin-top: -10px
+        }
+        td, th {
+            border: 1px solid #767676;
+            padding: 4px;
+        }
+    </style>
+    <meta charset="UTF-8">
+    <title>XMRIG Stats</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+</head>
+<body ng-app="xmrigstats">
+<div ng-controller="MainController">
+    <md-toolbar class="md-hue-2" md-whiteframe="3">
+        <div class="md-toolbar-tools">
+            <span>XMRig Stats</span>
+            <span flex></span>
+            <md-button ng-click="settings()" class="md-icon-button">
+                <md-icon>settings</md-icon>
+            </md-button>
+        </div>
+    </md-toolbar>
+    <md-content layout-xs="column" layout="row" layout-align="center center" class="md-padding">
+        <md-card>
+            <md-card-header>
+                <md-card-header-text>
+                    <p class="md-title" style="font-size: 25px">{{res.worker_id}}</p>
+                    <p class="md-subhead" style="margin-top: -15px">{{res.ua}}</p>
+                    <p class="md-subhead" style="margin-top: -15px; margin-bottom: -10px">{{res.algo}} on {{res.kind}}</p>
+                </md-card-header-text>
+            </md-card-header>
+            <md-divider></md-divider>
+            <md-card-content style="margin-top: 0">
+                <h2 style="font-size: 20px">System:</h2>
+                <p>CPU: {{res.cpu.brand}}</p>
+                <p ng-if="res.cpu.aes">Supports AES</p>
+                <p>{{res.cpu.x64 ? "64" : "32"}}bit System with {{res.hugepages ? "enabled" : "disabled"}} hugepages and {{res.cpu.sockets}} Socket(s)</p>
+                <md-divider></md-divider>
+                <h2 style="font-size: 20px">Hashing:</h2>
+                <p class="head">Donation: {{res.donate_level}} from 100 Minutes</p>
+                <p>Highest Hashrate since start: {{res.hashrate.highest}} H/s</p>
+                <p>Total Hashrate: </p>
+                <table style="border-collapse: collapse; width: 100%">
+                    <tr>
+                        <th>2.5s</th>
+                        <th>60s</th>
+                        <th>15min</th>
+                    </tr>
+                    <tr>
+                        <td>{{res.hashrate.total[0]}}</td>
+                        <td>{{res.hashrate.total[1]}}</td>
+                        <td>{{res.hashrate.total[2]}}</td>
+                    </tr>
+                </table>
+                <p>Per Thread Hashrate: </p>
+                <table style="border-collapse: collapse; width: 100%">
+                    <tr>
+                        <th>Thread</th>
+                        <th>2.5s</th>
+                        <th>60s</th>
+                        <th>15min</th>
+                    </tr>
+                    <tr ng-repeat="thread in res.hashrate.threads">
+                            <td>{{$index+1}}</td>
+                            <td>{{thread[0]}}</td>
+                            <td>{{thread[1]}}</td>
+                            <td>{{thread[2]}}</td>
+                    </tr>
+                </table>
+                <md-divider style="margin-top: 5px"></md-divider>
+                <h2 style="font-size: 20px">Results:</h2>
+                <p class="head">Current Difficulty is {{res.results.diff_current}}</p>
+                <p>Average Time: {{res.results.avg_time}}</p>
+                <p>Total Hashes: {{res.results.hashes_total}}</p>
+                <!-- Error Log -->
+                <md-divider></md-divider>
+                <h2 style="font-size: 20px">Connection:</h2>
+                <p class="head">You are mining to {{res.connection.pool}}</p>
+                <p>Ping: {{res.connection.ping}}</p>
+                <p>Failures: {{res.connection.failures}}</p>
+                <p>Last Connection lost: {{res.started}}</p>
+                <!-- Error Log -->
+            </md-card-content>
+        </md-card>
+    </md-content>
+</div>
+<div style="text-align: center; margin-bottom: 15px;">
+<p>XMRig Stats v0.3</p>
+<p style="margin-top: -10px">by dunklesToast</p>
+</div>
+</body>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.5/angular.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.5/angular-animate.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/angular-material/1.1.5/angular-material.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.5/angular-aria.min.js"></script>
+<script src="index.js"></script>
+</html>
