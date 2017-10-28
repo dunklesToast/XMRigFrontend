@@ -1,13 +1,26 @@
 # XMRigFrontend
-One-Page Material Design WebSite which delivers you the most important things about your XMRig Miner!
+This is a Simple Frontend for the XMRig Monero Miners.
+It shows all the important informations (Hashrate, Last Connection loss...) and has a simple, responsive Design.
+You can test it at the [Live Demo](https://dunklestoast.github.io/XMRigFrontend/index.html) on GitHub Pages!
 
-Live Demo here: [github pages](https://dunklestoast.github.io/XMRigFrontend/index.html)
-You could also just use this page since all requests to the Miner are made directly from your device!
+## Features
+- Easy Install
+- No Server needed
+- configurable
+- Supports [XMRig CPU Miner](https://github.com/xmrig/xmrig)
+
 
 ## Installation
-Simply drag and drop the 3 Files to your WebServer. Then open the page in your WebBrowser and click on the "Settings" Icon on the upper right.
-There you can set your Host (do not forget the http://) and the Port (and if you need to a Bearer Token)
+##### GitHub Pages Version (more Up2Date)
+If you don't have a WebServer you can simply use the Version on [GitHub Pages](https://dunklestoast.github.io/XMRigFrontend/index.html).
+All requests to the miner are made directly from your Device. If you use the GitHub Pages Version there is no need too Setup a Server!
 
+##### SelfHosted
+If you like to host this page yourself, simply drag and drop the 3 Files to your WebServer. All dependencies are loaded from cdn.js to make the installation as simple as possible. But if you want to, you can replace them easily!
+
+## Setup
+The Setup is very easy.
+You just need to open the Page on your WebBrowser and enter your Host and Port in the Settings menu (the icon in the upper right). If you enabled the Bearer Authorization you can also use it. All Settings are Stored locally on your PC.
 
 ## Bugs
 If you found a Bug please let me know an create an Issue here!
