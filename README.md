@@ -1,6 +1,8 @@
 # XMRigFrontend
 One-Page Material Design WebSite which delivers you the most important things about your XMRig Miner!
 
+Live Demo here: [github pages](https://dunklestoast.github.io/XMRigFrontend/index.html)
+You could also just use this page since all requests to the Miner are made directly from your device!
 
 ## Installation
 Simply drag and drop the 3 Files to your WebServer. Then open the page in your WebBrowser and click on the "Settings" Icon on the upper right.
