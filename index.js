@@ -17,7 +17,7 @@ xmrig.controller('MainController', function ($scope, $http, $mdDialog, $mdSidena
 
     $scope.rigs = JSON.parse(localStorage.getItem('rigs')) || [];
     $scope.currentRig = 0;
-    if(JSON.parse(localStorage.getItem('rigs'))){
+    if (JSON.parse(localStorage.getItem('rigs'))) {
         $scope.type = JSON.parse(localStorage.getItem('rigs'))[$scope.currentRig];
     }
 
@@ -28,11 +28,11 @@ xmrig.controller('MainController', function ($scope, $http, $mdDialog, $mdSidena
     function update() {
         try {
             var json = ($scope.rigs[$scope.currentRig]);
-            if(json){
+            if (json) {
                 $http.get(json.url + ':' + json.port).then(function (data) {
-                    if(json.type === "proxy"){
+                    if (json.type === 'proxy') {
                         $http.get(json.url + ':' + json.port + '/workers.json').then(function (w) {
-                            for(var i = 0; i < w.data.workers.length; i++){
+                            for (var i = 0; i < w.data.workers.length; i++) {
                                 w.data.workers[i][7] = $scope.date(new Date(w.data.workers[i][7]));
                             }
                             $scope.workers = w.data.workers;
@@ -40,17 +40,24 @@ xmrig.controller('MainController', function ($scope, $http, $mdDialog, $mdSidena
                         data.data.uptime = $scope.date(new Date(new Date() - data.data.uptime));
                     }
                     $scope.res = data.data;
+                    clearTimeout(x);
+                    x = setTimeout(update(), 5000);
                 });
-            }else {
-                throw new Error('No Miner saved')
+            } else {
+                if (x) clearTimeout(x);
+                setTimeout(function () {
+                    update()
+                }, 60000);
+                throw new Error('No Miner saved');
             }
-        }catch (e){
+        } catch (e) {
             console.error(e);
-            $mdDialog.show($mdDialog.alert().clickOutsideToClose(true).title('Error').textContent('We could not reach the Miner and encountered an Error: ' + e.message).ok('Damn!'));
+            $mdDialog.show($mdDialog.alert().clickOutsideToClose(true).title('Error').textContent('We could not reach the Miner and encountered an Error: ' + e.message + '. Sleeping 60s').ok('Damn!'));
         }
     }
 
     update();
+    x = setTimeout(update(), 5000);
 
     $scope.settings = function (ev) {
         $mdDialog.show({
@@ -60,9 +67,9 @@ xmrig.controller('MainController', function ($scope, $http, $mdDialog, $mdSidena
             targetEvent: ev,
             clickOutsideToClose: true,
             fullscreen: true
-        }).then( function () {
+        }).then(function () {
             $scope.rigs = JSON.parse(localStorage.getItem('rigs'));
-        })
+        });
     };
 
     $scope.remove = function (ev) {
@@ -73,11 +80,11 @@ xmrig.controller('MainController', function ($scope, $http, $mdDialog, $mdSidena
             targetEvent: ev,
             clickOutsideToClose: true,
             fullscreen: true
-        }).then( function () {
+        }).then(function () {
             $scope.rigs = JSON.parse(localStorage.getItem('rigs'));
-        })
+        });
     };
-    
+
     $scope.close = function (number) {
         console.log('Changing to ' + $scope.rigs[number].name);
         $scope.currentRig = number;
@@ -89,7 +96,7 @@ xmrig.controller('MainController', function ($scope, $http, $mdDialog, $mdSidena
 
     $scope.date = function (d) {
         return ('0' + d.getDate()).toString().substr(-2) + '.' + ('0' + (d.getMonth() + 1)).toString().substr(-2) + '.' + d.getFullYear() + ' / ' + ('0' + d.getHours()).toString().substr(-2) + ':' + ('0' + d.getMinutes()).toString().substr(-2) + ':' + ('0' + d.getSeconds()).toString().substr(-2);
-    }
+    };
 
 }).config(function ($mdThemingProvider) {
     $mdThemingProvider.theme('default').primaryPalette('orange').accentPalette('pink').dark();
@@ -114,13 +121,13 @@ function SettingsController($scope, $mdDialog) {
 }
 
 function RemoveController($scope, $mdDialog) {
-    $scope.rigs =  JSON.parse(localStorage.getItem('rigs')) || [];
+    $scope.rigs = JSON.parse(localStorage.getItem('rigs')) || [];
     $scope.cancel = function () {
         $mdDialog.hide();
     };
     $scope.removeRig = function (i) {
         console.log(JSON.stringify($scope.rigs.splice(i, 1)));
         localStorage.clear();
-        localStorage.setItem('rigs', JSON.stringify($scope.rigs.splice(i, 1)))
-    }
+        localStorage.setItem('rigs', JSON.stringify($scope.rigs.splice(i, 1)));
+    };
 }
