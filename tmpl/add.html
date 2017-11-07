@@ -1,0 +1,74 @@
+<md-dialog aria-label="Settings" style="width: 50%;">
+    <form ng-cloak>
+        <md-toolbar>
+            <div class="md-toolbar-tools">
+                <h2>Add a Rig</h2>
+                <span flex></span>
+                <md-button class="md-icon-button" ng-click="cancel()">
+                    <md-icon aria-label="Close dialog">cancel</md-icon>
+                </md-button>
+            </div>
+        </md-toolbar>
+        <md-dialog-content>
+            <div class="md-dialog-content">
+                <div layout="row" layout-wrap>
+                    <div flex="50">
+                        <h3>name your rig</h3>
+                        <md-input-container>
+                            <label>Name</label>
+                            <input ng-model="rig.name">
+                        </md-input-container>
+                    </div>
+                    <div flex="50">
+                        <h3>set rig's type</h3>
+                        <md-input-container>
+                            <label>Type</label>
+                            <md-select ng-model="rig.type" placehoder="Edition">
+                                <md-option value="cpu">
+                                    XMRig CPU
+                                </md-option>
+                                <md-option value="nvidia">
+                                    XMRig NVIDIA
+                                </md-option>
+                                <md-option value="proxy">
+                                    XMRig Proxy
+                                </md-option>
+                            </md-select>
+                        </md-input-container>
+                    </div>
+                    <div flex="50">
+                        <h3>rig's url</h3>
+                        <md-input-container>
+                            <label>URL</label>
+                            <input ng-model="rig.url">
+                        </md-input-container>
+                    </div>
+                    <div flex="50">
+                        <h3>rig's port</h3>
+                        <md-input-container>
+                            <label>Port</label>
+                            <input ng-model="rig.port">
+                        </md-input-container>
+                    </div>
+                    <div>
+                        <h3>Authentication</h3>
+                        <md-input-container>
+                            <label>Bearer Token</label>
+                            <input ng-model="rig.auth">
+                        </md-input-container>
+                    </div>
+                </div>
+                <md-divider></md-divider>
+        </md-dialog-content>
+
+        <md-dialog-actions layout="row">
+            <span flex></span>
+            <md-button class="md-warn" ng-click="cancel()">
+                Cancel
+            </md-button>
+            <md-button ng-click="save(true)">
+                Save
+            </md-button>
+        </md-dialog-actions>
+    </form>
+</md-dialog>

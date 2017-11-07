@@ -1,0 +1,34 @@
+<md-dialog aria-label="Settings" style="width: 50%;">
+    <form ng-cloak>
+        <md-toolbar>
+            <div class="md-toolbar-tools">
+                <h2>Remove a Rig</h2>
+                <span flex></span>
+                <md-button class="md-icon-button" ng-click="cancel()">
+                    <md-icon aria-label="Close dialog">cancel</md-icon>
+                </md-button>
+            </div>
+        </md-toolbar>
+        <md-dialog-content >
+            <div class="md-dialog-content">
+                <div ng-repeat="rig in rigs">
+                    <div layout="row">
+                        <p>{{$index+1}}. {{rig.name}} {{rig.type}}</p>
+                        <span flex></span>
+                        <md-button ng-click="removeRig($index)">remove</md-button>
+                    </div>
+                    <md-divider></md-divider>
+                </div>
+                <p ng-if="rigs.length === 0">There are no rigs :(</p>
+            </div>
+            <md-divider></md-divider>
+        </md-dialog-content>
+
+        <md-dialog-actions layout="row">
+            <span flex></span>
+            <md-button ng-click="cancel()">
+                Close
+            </md-button>
+        </md-dialog-actions>
+    </form>
+</md-dialog>

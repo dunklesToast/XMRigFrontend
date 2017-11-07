@@ -11,6 +11,7 @@
             font-size: 14px;
             margin-top: -10px
         }
+
         td, th {
             border: 1px solid #767676;
             padding: 4px;
@@ -25,80 +26,171 @@
 <div ng-controller="MainController">
     <md-toolbar class="md-hue-2" md-whiteframe="3">
         <div class="md-toolbar-tools">
-            <span>XMRig Stats</span>
+            <md-button ng-click="toggleMenu()" class="md-icon-button">
+                <md-icon>menu</md-icon>
+            </md-button>
+            <span>XMRig Stats - {{rigs[currentRig].name}}</span>
             <span flex></span>
             <md-button ng-click="settings()" class="md-icon-button">
-                <md-icon>settings</md-icon>
+                <md-icon>add</md-icon>
+            </md-button>
+            <md-button ng-click="remove()" class="md-icon-button">
+                <md-icon>remove</md-icon>
             </md-button>
         </div>
     </md-toolbar>
-    <md-content layout-xs="column" layout="row" layout-align="center center" class="md-padding">
-        <md-card>
-            <md-card-header>
-                <md-card-header-text>
-                    <p class="md-title" style="font-size: 25px">{{res.worker_id}}</p>
-                    <p class="md-subhead" style="margin-top: -15px">{{res.ua}}</p>
-                    <p class="md-subhead" style="margin-top: -15px; margin-bottom: -10px">{{res.algo}} on {{res.kind}}</p>
-                </md-card-header-text>
-            </md-card-header>
-            <md-divider></md-divider>
-            <md-card-content style="margin-top: 0">
-                <h2 style="font-size: 20px">System:</h2>
-                <p>CPU: {{res.cpu.brand}}</p>
-                <p ng-if="res.cpu.aes">Supports AES</p>
-                <p>{{res.cpu.x64 ? "64" : "32"}}bit System with {{res.hugepages ? "enabled" : "disabled"}} hugepages and {{res.cpu.sockets}} Socket(s)</p>
+    <md-sidenav class="md-sidenav-left md-whiteframe-4dp" md-component-id="menu">
+        <md-toolbar class="md-theme-light">
+            <h1 class="md-toolbar-tools">All Rigs</h1>
+        </md-toolbar>
+        <md-content layout-padding>
+            <span ng-repeat="rig in rigs">
+            <md-button ng-click="close($index)">
+                {{rig.name}}
+                <br>
+            </md-button>
+            <br>
+            </span>
+        </md-content>
+    </md-sidenav>
+
+
+    <div layout="column" layout-align="center center">
+        <div ng-if="rigs.length !== 0">
+            <md-card>
+                <md-card-header>
+                    <md-card-header-text>
+                        <p class="md-title" style="font-size: 25px">{{res.worker_id}}</p>
+                        <p class="md-subhead" style="margin-top: -15px">{{res.ua}}</p>
+                        <p class="md-subhead" ng-if="type !== 'proxy'" style="margin-top: -15px; margin-bottom: -10px">{{res.algo}} on {{res.kind}}</p>
+                        <div ng-if="type === 'proxy'">
+                            <p class="md-subhead" style="margin-top: -15px; margin-bottom: -10px">Kind: {{res.kind}}</p>
+                            <p class="md-subhead" style="margin-bottom: -10px">Running since: {{res.uptime}}</p>
+                        </div>
+                    </md-card-header-text>
+                </md-card-header>
                 <md-divider></md-divider>
-                <h2 style="font-size: 20px">Hashing:</h2>
-                <p class="head">Donation: {{res.donate_level}} from 100 Minutes</p>
-                <p>Highest Hashrate since start: {{res.hashrate.highest}} H/s</p>
-                <p>Total Hashrate: </p>
-                <table style="border-collapse: collapse; width: 100%">
-                    <tr>
-                        <th>2.5s</th>
-                        <th>60s</th>
-                        <th>15min</th>
-                    </tr>
-                    <tr>
-                        <td>{{res.hashrate.total[0]}}</td>
-                        <td>{{res.hashrate.total[1]}}</td>
-                        <td>{{res.hashrate.total[2]}}</td>
-                    </tr>
-                </table>
-                <p>Per Thread Hashrate: </p>
-                <table style="border-collapse: collapse; width: 100%">
-                    <tr>
-                        <th>Thread</th>
-                        <th>2.5s</th>
-                        <th>60s</th>
-                        <th>15min</th>
-                    </tr>
-                    <tr ng-repeat="thread in res.hashrate.threads">
-                            <td>{{$index+1}}</td>
-                            <td>{{thread[0]}}</td>
-                            <td>{{thread[1]}}</td>
-                            <td>{{thread[2]}}</td>
-                    </tr>
-                </table>
-                <md-divider style="margin-top: 5px"></md-divider>
-                <h2 style="font-size: 20px">Results:</h2>
-                <p class="head">Current Difficulty is {{res.results.diff_current}}</p>
-                <p>Average Time: {{res.results.avg_time}}</p>
-                <p>Total Hashes: {{res.results.hashes_total}}</p>
-                <!-- Error Log -->
+                <md-card-content style="margin-top: 0">
+                    <div ng-if="type !== 'proxy'">
+                        <h2 style="font-size: 20px">System:</h2>
+                        <p>CPU: {{res.cpu.brand}}</p>
+                        <p ng-if="res.cpu.aes">Supports AES</p>
+                        <p>{{res.cpu.x64 ? "64" : "32"}}bit System with {{res.hugepages ? "enabled" : "disabled"}} hugepages and {{res.cpu.sockets}} Socket(s)</p>
+                        <md-divider></md-divider>
+                    </div>
+                    <h2 style="font-size: 20px">Hashing:</h2>
+                    <p class="head">Donation: {{res.donate_level}} from 100 Minutes</p>
+                    <p>Highest Hashrate since start: {{res.hashrate.highest}} H/s</p>
+                    <p ng-if="type !== 'proxy'">Donated: {{res.donated}}</p>
+                    <p>Total Hashrate: </p>
+                    <table style="border-collapse: collapse; width: 100%">
+                        <tr>
+                            <th ng-if="type !== 'proxy'">2.5s</th>
+                            <th>60s</th>
+                            <th ng-if="type !== 'proxy'">15min</th>
+                            <th ng-if="type === 'proxy'">10min</th>
+                            <th ng-if="type === 'proxy'">60min</th>
+                            <th ng-if="type === 'proxy'">12hr</th>
+                            <th ng-if="type === 'proxy'">24hr</th>
+                        </tr>
+                        <tr>
+                            <td>{{res.hashrate.total[0]}}</td>
+                            <td>{{res.hashrate.total[1]}}</td>
+                            <td>{{res.hashrate.total[2]}}</td>
+                            <td ng-if="type === 'proxy'">{{res.hashrate.total[3]}}</td>
+                            <td ng-if="type === 'proxy'">{{res.hashrate.total[4]}}</td>
+                        </tr>
+                    </table>
+                    <div ng-if="type !== 'proxy'">
+                        <p>Per Thread Hashrate: </p>
+                        <table style="border-collapse: collapse; width: 100%">
+                            <tr>
+                                <th>Thread</th>
+                                <th>2.5s</th>
+                                <th>60s</th>
+                                <th>15min</th>
+                            </tr>
+                            <tr ng-repeat="thread in res.hashrate.threads">
+                                <td>{{$index+1}}</td>
+                                <td>{{thread[0]}}</td>
+                                <td>{{thread[1]}}</td>
+                                <td>{{thread[2]}}</td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div ng-if="type === 'proxy'">
+                        <md-divider></md-divider>
+                        <h2>Miners</h2>
+                        <p>Current: {{res.miners.now}}</p>
+                        <p>Maximum: {{res.miners.max}}</p>
+                    </div>
+                    <md-divider style="margin-top: 5px"></md-divider>
+                    <div ng-if="type === 'proxy'">
+                        <h2 style="font-size: 20px">Results:</h2>
+                        <p class="head">Upstreams: {{res.upstreams}}</p>
+                        <p>Accepted/Rejected: {{res.results.accepted}}/{{res.results.rejected}}</p>
+                        <p>Invalid: {{res.results.invalid}}</p>
+                        <p>Expired: {{res.results.expired}}</p>
+                        <p>Average Time: {{res.results.avg_time}}</p>
+                        <p>Latency: {{res.results.latency}}ms</p>
+                        <p>Total Hashes: {{res.results.hashes_total}} Hashes</p>
+                        <p>Donated Hashes: {{res.results.hashes_donate}} Hashes</p>
+                        <md-divider></md-divider>
+                        <h2>Workers</h2>
+                        <span ng-repeat="worker in workers track by $index">
+                            <h2>{{worker[0]}}</h2>
+                            <p class="head">{{worker[1]}}</p>
+                            <p>Connections: {{worker[2]}}</p>
+                            <p>Accepted: {{worker[3]}}</p>
+                            <p>Rejected: {{worker[4]}}</p>
+                            <p>Invalid: {{worker[5]}}</p>
+                            <p>Total Hashes: {{worker[6]}}</p>
+                            <p>Last Hash Submitted: {{worker[7]}}</p>
+                        <md-divider></md-divider>
+                        </span>
+                    </div>
+                    <div ng-if="type !== 'proxy'">
+                        <h2 style="font-size: 20px">Results:</h2>
+                        <p class="head">Current Difficulty is {{res.results.diff_current}}</p>
+                        <p>Average Time: {{res.results.avg_time}}</p>
+                        <p>Total Hashes: {{res.results.hashes_total}}</p>
+                        <!-- Error Log -->
+                        <div>
+                            <md-divider></md-divider>
+                            <h2 style="font-size: 20px">Connection:</h2>
+                            <p class="head">You are mining to {{res.connection.pool}}</p>
+                            <p>Ping: {{res.connection.ping}}</p>
+                            <p>Failures: {{res.connection.failures}}</p>
+                            <p>Last Connection lost: {{res.started}}</p>
+                        </div>
+                    </div>
+                    <!-- Error Log -->
+                </md-card-content>
+            </md-card>
+        </div>
+
+        <div ng-if="rigs.length === 0">
+            <md-card>
+                <md-card-header>
+                    <md-card-header-text>
+                        <p class="md-title" style="font-size: 25px">No Rig found</p>
+                    </md-card-header-text>
+                </md-card-header>
                 <md-divider></md-divider>
-                <h2 style="font-size: 20px">Connection:</h2>
-                <p class="head">You are mining to {{res.connection.pool}}</p>
-                <p>Ping: {{res.connection.ping}}</p>
-                <p>Failures: {{res.connection.failures}}</p>
-                <p>Last Connection lost: {{res.started}}</p>
-                <!-- Error Log -->
-            </md-card-content>
-        </md-card>
-    </md-content>
-</div>
-<div style="text-align: center; margin-bottom: 15px;">
-<p>XMRig Stats v0.3</p>
-<p style="margin-top: -10px">by dunklesToast</p>
+                <md-card-content style="margin-top: 0">
+                    <p>Add Rigs with the
+                        <md-icon>add</md-icon>
+                        button in the toolbar above!
+                    </p>
+                </md-card-content>
+            </md-card>
+        </div>
+
+        <div style="text-align: center; margin-bottom: 15px;">
+            <p>XMRig Stats v0.3</p>
+            <p style="margin-top: -10px">by dunklesToast</p>
+        </div>
+    </div>
 </div>
 </body>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.5/angular.min.js"></script>
