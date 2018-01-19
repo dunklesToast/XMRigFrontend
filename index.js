@@ -40,14 +40,12 @@ xmrig.controller('MainController', function ($scope, $http, $mdDialog, $mdSidena
                         data.data.uptime = $scope.date(new Date(new Date() - data.data.uptime));
                     }
                     $scope.res = data.data;
-                    clearTimeout(x);
-                    x = setTimeout(update(), 5000);
+					if(x) clearInterval(x);
+					x = setInterval(update, 5000);
                 });
             } else {
-                if (x) clearTimeout(x);
-                setTimeout(function () {
-                    update()
-                }, 60000);
+                if (x) clearInterval(x);
+                x = setInterval(update, 60000);
                 throw new Error('No Miner saved');
             }
         } catch (e) {
@@ -56,8 +54,8 @@ xmrig.controller('MainController', function ($scope, $http, $mdDialog, $mdSidena
         }
     }
 
-    update();
-    x = setTimeout(update(), 5000);
+
+	x = setInterval(update, 5000);
 
     $scope.settings = function (ev) {
         $mdDialog.show({
@@ -117,6 +115,7 @@ function SettingsController($scope, $mdDialog) {
         });
         localStorage.setItem('rigs', JSON.stringify(current));
         $mdDialog.hide();
+		update();
     };
 }
 
