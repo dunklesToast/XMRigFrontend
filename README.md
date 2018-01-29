@@ -12,7 +12,8 @@ You can test it at the [Live Demo](https://dunklestoast.github.io/XMRigFrontend/
 
 ## Installation
 ##### GitHub Pages Version
-If you don't have a WebServer you can simply use the Version on [GitHub Pages](https://dunklestoast.github.io/XMRigFrontend/index.html).
+If you don't have a WebServer you can simply use the Version on [my Server](http://xmrig.dunklestoast.de/).
+It has no SSL due to #2. If you want to use it with SSL (maybe because you are mining on a Server or something use this: [GitHub Pages](https://dunklestoast.github.io/XMRigFrontend/index.html)
 All requests to the miner are made directly from your Device. If you use the GitHub Pages Version there is no need too Setup a Server! If you use Chrome and your Miner has no HTTPS, you need click on the Shield in the Addressbar and Allow "Unsafe Scripts". 
 
 ##### SelfHosted
@@ -23,7 +24,7 @@ The Setup is very easy.
 You just need to open the Page on your WebBrowser and enter your Host and Port in the Settings menu (the icon in the upper right). If you enabled the Bearer Authorization you can also use it. All Settings are Stored locally on your PC.
 
 ## Bugs
-If you found a Bug please let me know an create an Issue here!
+If you found a Bug please let me know and create an Issue here!
 
 ## Enhancements
 You have great Ideas how to make this better?

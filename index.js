@@ -29,7 +29,8 @@ xmrig.controller('MainController', function ($scope, $http, $mdDialog, $mdSidena
         try {
             var json = ($scope.rigs[$scope.currentRig]);
             if (json) {
-                $http.get(json.url + ':' + json.port).then(function (data) {
+                console.log('updating')
+                $http.get(json.url + ':' + json.port + '/test.json').then(function (data) {
                     if (json.type === 'proxy') {
                         $http.get(json.url + ':' + json.port + '/workers.json').then(function (w) {
                             for (var i = 0; i < w.data.workers.length; i++) {
@@ -41,13 +42,11 @@ xmrig.controller('MainController', function ($scope, $http, $mdDialog, $mdSidena
                     }
                     $scope.res = data.data;
                     clearTimeout(x);
-                    x = setTimeout(update(), 5000);
+                    x = setTimeout(update, 5000);
                 });
             } else {
                 if (x) clearTimeout(x);
-                setTimeout(function () {
-                    update()
-                }, 60000);
+                setTimeout(update, 60000);
                 throw new Error('No Miner saved');
             }
         } catch (e) {
@@ -57,7 +56,6 @@ xmrig.controller('MainController', function ($scope, $http, $mdDialog, $mdSidena
     }
 
     update();
-    x = setTimeout(update(), 5000);
 
     $scope.settings = function (ev) {
         $mdDialog.show({
