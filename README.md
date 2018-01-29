@@ -21,7 +21,10 @@ If you like to host this page yourself, simply drag and drop the 3 Files to your
 
 ## Setup
 The Setup is very easy.
-You just need to open the Page on your WebBrowser and enter your Host and Port in the Settings menu (the icon in the upper right). If you enabled the Bearer Authorization you can also use it. All Settings are Stored locally on your PC.
+You just need to open the Page on your WebBrowser and enter your Host and Port in the Settings menu (the icon in the upper right).
+The Host is the IP Address of your miner. On linux (and macOS) you can get it with the `ifconfig` command and on Windows there is the `ipconfig`!
+If you enabled the Bearer Authorization you can also use it. All Settings are Stored locally on your PC.
+
 
 ## Bugs
 If you found a Bug please let me know and create an Issue here!
