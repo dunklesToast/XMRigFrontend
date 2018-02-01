@@ -30,7 +30,7 @@ xmrig.controller('MainController', function ($scope, $http, $mdDialog, $mdSidena
             var json = ($scope.rigs[$scope.currentRig]);
             if (json) {
                 console.log('updating')
-                $http.get(json.url + ':' + json.port + '/test.json').then(function (data) {
+                $http.get(json.url + ':' + json.port).then(function (data) {
                     if (json.type === 'proxy') {
                         $http.get(json.url + ':' + json.port + '/workers.json').then(function (w) {
                             for (var i = 0; i < w.data.workers.length; i++) {
