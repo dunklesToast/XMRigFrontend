@@ -2,7 +2,6 @@
 
 var xmrig = angular.module('xmrigstats', ['ngMaterial']);
 var x;
-var interval;
 xmrig.controller('MainController', function ($scope, $http, $mdDialog, $mdSidenav) {
     $scope.safeApply = function (fn) {
         var phase = this.$root.$$phase;
@@ -29,8 +28,8 @@ xmrig.controller('MainController', function ($scope, $http, $mdDialog, $mdSidena
         try {
             var json = ($scope.rigs[$scope.currentRig]);
             if (json) {
-                console.log('updating')
-                $http.get(json.url + ':' + json.port).then(function (data) {
+                console.log('updating');
+                $http.get(json.url + ':' + json.port + ((json.type === 'proxy') ? '/1/summary' : '/')).then(function (data) {
                     if (json.type === 'proxy') {
                         $http.get(json.url + ':' + json.port + '/1/workers').then(function (w) {
                             for (var i = 0; i < w.data.workers.length; i++) {
