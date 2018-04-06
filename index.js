@@ -32,7 +32,7 @@ xmrig.controller('MainController', function ($scope, $http, $mdDialog, $mdSidena
                 console.log('updating')
                 $http.get(json.url + ':' + json.port).then(function (data) {
                     if (json.type === 'proxy') {
-                        $http.get(json.url + ':' + json.port + '/workers.json').then(function (w) {
+                        $http.get(json.url + ':' + json.port + '/1/workers').then(function (w) {
                             for (var i = 0; i < w.data.workers.length; i++) {
                                 w.data.workers[i][7] = $scope.date(new Date(w.data.workers[i][7]));
                             }
